@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-TEMPO = 110
+TEMPO = 50
 SFREQ = 44100
 NOTES = [24, 24, 48, 37]
 TAU = 6.283185307179586476925286766559
@@ -45,13 +45,35 @@ class MoogFilter
   end
 end
 
+class AR
+  def initialize(a,r)
+    @a = a
+    @r = r
+  end
+  def run(t)
+    if t > @a + @r
+      return 0
+    elsif t > @a #release
+      return 1 - ((1 / @r) * (t - @a))
+    else
+      return 1 / @a * t
+    end
+
+  end
+end
+
 filter = MoogFilter.new
 #ffreqSmoother = Smoother.new(2)
 noteSmoother = Smoother.new(20)
 (SFREQ * 4).times do |i|
+  vol_ar = AR.new(0.001,0.3)
+  flt_ar = AR.new(0.2,0.1)
 
   t = i.to_f / SFREQ.to_f # time in seconds
-  b = (t * TEMPO / (15.0)).to_i
+  s_per_b = 15.0 / TEMPO.to_f
+  b = t / s_per_b
+  # STDERR.puts b
+  t_in_b = t % s_per_b
   note = NOTES[b % NOTES.length]
   if note
     note = noteSmoother.run(note)
@@ -64,7 +86,8 @@ noteSmoother = Smoother.new(20)
   end
   #f = (t * 1) % 0.3 + 0.05
   #f = ffreqSmoother.run(f)
-  v = filter.run(v, 0.3, 1.0)
+  v = filter.run(v, 0.01 + flt_ar.run(t_in_b) * 0.2, 3)
+  v *= vol_ar.run(t_in_b)
   v = v * 0.4
   v = [1.0, [-1.0, v].max].min
   print [v].pack('e')

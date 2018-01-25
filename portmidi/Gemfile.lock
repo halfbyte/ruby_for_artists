@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.9.18)
+    launchpad (0.3.0)
+      ffi
+      portmidi (>= 0.0.6)
+    portmidi (0.0.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  launchpad
+  portmidi
+
+BUNDLED WITH
+   1.16.0
