@@ -45,7 +45,7 @@ class MoogFilter
   end
 end
 
-class AR
+class Envelope
   def initialize(a,r)
     @a = a
     @r = r
@@ -66,14 +66,14 @@ filter = MoogFilter.new
 #ffreqSmoother = Smoother.new(2)
 noteSmoother = Smoother.new(20)
 (SFREQ * 4).times do |i|
-  vol_ar = AR.new(0.001,0.3)
-  flt_ar = AR.new(0.2,0.1)
+  vol_ar = Envelope.new(0.001,0.3)
+  flt_ar = Envelope.new(0.2,0.1)
 
   t = i.to_f / SFREQ.to_f # time in seconds
   s_per_b = 15.0 / TEMPO.to_f
   b = t / s_per_b
   # STDERR.puts b
-  t_in_b = t % s_per_b
+  t_in_b = t % s_per_b #time in quarternote
   note = NOTES[b % NOTES.length]
   if note
     note = noteSmoother.run(note)
