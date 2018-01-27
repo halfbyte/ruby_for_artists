@@ -7,4 +7,5 @@ A weird and wonderful mixture of different ways to use ruby to make art
 1. [mittsu](mittsu/) a simple and a more complex example of Mittsu, the ThreeJS inspired OpenGL wrapper
 1. [portmidi](portmidi/) some examples of using the portmidi library to use
 1. [RubySynth](rubysynth/) an MVP of a ruby sound synthesizer system
-1. [SketchUp API](sketchup_api/) two small examples 
+1. [SketchUp API](sketchup_api/) two small examples on how to use Ruby to crate Geometry in SketchUP.
+1. [the_talk](the_talk/) this is the actual presentation, using a quick template setup. It uses [Remark](https://github.com/gnab/remark).

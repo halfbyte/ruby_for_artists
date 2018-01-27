@@ -1,3 +1,16 @@
+# Data for a simple pixel font.
+# How to render it:
+# Find the character you need (it uses a very reduced charset).
+# :width gives you the width of the character, including a spacer pixel on the right
+# :data contains a bitmask for each line of the character. So, the data for a renders
+# as:
+#   **
+#  *  *
+#  ****
+#  *  *
+#  *  *
+#
+
 module CharFont
   CHARS = {
       'a' => {width: 5, data: [6, 9, 15, 9, 9]},

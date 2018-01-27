@@ -18,7 +18,7 @@ module Halfbyte
       text = text.downcase
       xoff = 0
       text.each_char do |c|
-        char_data = CHARS[c]
+        char_data = CharFont::CHARS[c]
         draw_character(char_data, xoff)
         xoff += char_data[:width]
       end

@@ -128,7 +128,7 @@ class Pong < Gosu::Window
       Player.new(115, height - 115, 10, {down: Gosu::KB_S, up: Gosu::KB_W}),
       Player.new(115, height - 115, width - 15, {down: Gosu::KB_DOWN, up: Gosu::KB_UP})
     ]
-    @font = Gosu::Font.new(100, name: 'Futura' )
+    @font = Gosu::Font.new(100, name: 'fonts/Coolville.ttf' )
   end
 
   def update
