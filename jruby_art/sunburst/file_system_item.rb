@@ -44,6 +44,7 @@ class FileSystemItem
         contents.each do |file_name|
           next if file_name == '.' || file_name == '..'
           next if file_name.match(/^\./)
+          next if file_name.match(/tmp/)
           full_path = File.join(file, file_name)
           next if File.symlink?(full_path)
           child = FileSystemItem.new(full_path);
@@ -73,7 +74,6 @@ class FileSystemItem
   end
 
   def getRealFileSize(path)
-    puts "g_r_f #{path} - #{File.size(path)}"
     return File.size(path) if File.file?(path)
     total_size = 0
     if File.directory?(path)
@@ -81,6 +81,7 @@ class FileSystemItem
         Dir.entries(path).each do |file_name|
           next if file_name == '.' || file_name == '..'
           next if file_name.match(/^\./)
+          next if file_name.match(/tmp/)
           new_path = File.join(path, file_name)
           total_size += getRealFileSize(new_path)
         end
@@ -213,7 +214,6 @@ class FileSystemItem
         end
       end
 
-      puts "#{angle + angleOffset} : #{item.getFileSize()} #{anglePerMegabyte}"
 
       sunburstItems << SunburstItem.new(
         index, indexToParent, item.childCount, depth,

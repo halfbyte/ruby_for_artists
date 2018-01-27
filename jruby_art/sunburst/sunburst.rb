@@ -9,7 +9,7 @@ require_relative 'sunburst_item'
 
 attr_accessor :mappingMode, :hueStart, :hueEnd, :saturationStart, :saturationEnd,
     :brightnessStart, :brightnessEnd, :folderBrightnessStart, :folderBrightnessEnd,
-    :folderStrokeBrightnessStart, :folderBrightnessEnd, :fileArcScale, :folderArcScale,
+    :folderStrokeBrightnessStart, :folderStrokeBrightnessEnd, :fileArcScale, :folderArcScale,
     :strokeWeightStart, :strokeWeightEnd, :dotSize, :dotBrightness, :backgroundBrightness,
     :showArcs, :showLines, :useArc, :useBezierLine, :showGUI
 
@@ -23,7 +23,6 @@ $childCountMin = nil
 $childCountMax = nil
 $fileCounter = 0
 
-puts ARGV.inspect
 
 
 def settings
@@ -41,7 +40,7 @@ def setup
   text_align LEFT, TOP
   cursor CROSS
 
-  set_input_folder default_folder_path
+  set_input_folder "/Users/jan/Documents/projects/golfwart/golfwart/app"
 
 end
 
@@ -66,7 +65,7 @@ def setup_variables
   @strokeWeightEnd = 1.0;
   @dotSize = 3
   @dotBrightness = 1;
-  @backgroundBrightness = 20;
+  @backgroundBrightness = 100;
   @mappingMode = 1
 
   @useArc = true;
@@ -108,9 +107,7 @@ def draw
 
 
   # ------ draw the viz items ------
-  # puts "Drawing #{$sunburst.length} bursts"
   $sunburst.each_with_index do |sb, i|
-    #puts "drawing #{sb.file}"
     if showArcs
       if useArc
         sb.drawArc(folderArcScale, fileArcScale)
@@ -275,7 +272,7 @@ def mouse_exited(e)
 end
 
 def fileSelected(selection)
-  puts selection.inspect
+  #puts selection.inspect
 end
 
 def timestamp()

@@ -41,7 +41,11 @@
     <script src="js/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        ratio: '16:9',
+        scroll: false,
+        highlightLines: true,
+      });
     </script>
   </body>
 </html>

@@ -76,7 +76,6 @@ class SunburstItem
     @extension = theExtension;
     @angleCenter = theAngle + theExtension/2;
     @angleEnd = theAngle + theExtension;
-    puts "Angles: #{@angleStart}, #{@angleEnd}"
   end
 
 
@@ -85,7 +84,6 @@ class SunburstItem
   def update(theMappingMode)
     if (@indexToParent > -1)
       @radius = calcEqualAreaRadius(@depth, $depthMax)
-      puts "RADIUS: #{@radius}, #{@depth}, #{$depthMax}"
       @depthWeight = calcEqualAreaRadius(@depth+1,$depthMax) - @radius
       @x  = cos(@angleCenter) * @radius;
       @y  = sin(@angleCenter) * @radius;
@@ -109,20 +107,16 @@ class SunburstItem
       end
 
       # // colors for files and folders
-      puts "#{file}>#{isDir}"
       if (isDir)
         bright = 0;
         bright = lerp(folderBrightnessStart,folderBrightnessEnd,percent);
-        puts "DIR: #{bright}"
         @col = color(0,0,bright);
         bright = lerp(folderStrokeBrightnessStart,folderStrokeBrightnessEnd,percent);
-        puts "DIR LINE: #{bright}"
         @lineCol = color(0,0,bright);
       else
         from = color(hueStart, saturationStart, brightnessStart);
         to = color(hueEnd, saturationEnd, brightnessEnd);
         @col = lerp_color(from, to, percent);
-        puts "COL: #{@col}"
         @lineCol = @col;
       end
 
@@ -165,7 +159,6 @@ class SunburstItem
         stroke_weight(depthWeight * theFileScale);
         arcRadius = radius + depthWeight*theFileScale/2;
       end
-      #puts "ST: #{@col}, #{@angleStart}, #{@angleEnd}"
       stroke(@col);
       # //arc(0,0, arcRadius,arcRadius, angleStart, angleEnd);
       arcWrap(0,0, arcRadius, arcRadius, @angleStart, @angleEnd); # normaly arc should work

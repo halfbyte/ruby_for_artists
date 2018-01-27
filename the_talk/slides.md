@@ -8,12 +8,19 @@ class: center, middle
 ---
 class: center, middle, depfu, contain
 background-image: url(images/depfu-left-blue.png)
-
 ---
 class: center, middle, depfu
+# A warning
+---
+### Don't try to understand the code examples!
 
-# Why?
+Note: This not meant as an insult. I'm just aware that it's a lot of code on very different subjects and it will be next to impossible to understand it during the presentation. Instead, go to [halfbyte/ruby_for_artists](https://github.com/ruby_for_artists) and study the examples there.
 
+I'm providing the code fragments here to give you a sense of how much (or rather: how little) code is necessary and how the code looks in general. More of a teaser or taste bite than actually explaining how a library works.
+
+The reason I have (in contrast to what every one tells you to do) a looong text on one slide is that I want to warn people who click through these slides later on.
+
+(If you're sitting in the audience and you made it this far, please clap your hands twice.)
 ---
 class: center, middle, depfu
 
@@ -30,16 +37,16 @@ class: center, middle
 
 ---
 
-class: contain
+class: contain, bottom
 background-image: url(images/real_calendar.jpeg)
-
+[IBA Hamburg: BIQ](https://www.iba-hamburg.de/projekte/bauausstellung-in-der-bauausstellung/smart-material-houses/biq/projekt/biq.html)
 ---
 class: contain
 background-image: url(images/calendar_januar.png)
 ---
 # gem install 'prawn'
 ---
-class: middle
+
 ```ruby
 pdf = Prawn::Document.new(
   page_size: 'A4',
@@ -82,7 +89,7 @@ class: center, middle
 # JRuby_Art
 
 ---
-class: middle
+
 ```ruby
 def settings
   size 400, 400
@@ -99,7 +106,7 @@ end
 ```
 
 ---
-class: middle
+
 ```ruby
 def mouse_pressed
   @act_random_seed = random(100000).to_i
@@ -152,6 +159,36 @@ class: demo, center, middle
 ---
 # gosu
 ---
+```ruby
+def draw
+  draw_field
+  @ball.draw
+  @players.each(&:draw)
+end
+
+def draw_field
+  Gosu.draw_rect(10, 10, width - 20, 5, Gosu::Color::WHITE, 0)
+  Gosu.draw_rect(10, 15, 5, 100, Gosu::Color::WHITE, 0)
+  Gosu.draw_rect(10, height - 15, width - 20, 5, Gosu::Color::WHITE, 0)
+  Gosu.draw_rect(width-15, 15, 5, 100, Gosu::Color::WHITE, 0)
+  Gosu.draw_rect(10, height - 115, 5, 100, Gosu::Color::WHITE, 0)
+  Gosu.draw_rect(width-15, height - 115, 5, 100, Gosu::Color::WHITE, 0)
+
+  @font.draw(@players[0].score.to_s, 100, 10, 0)
+  @font.draw(@players[1].score.to_s, width - 100, 10, 0)
+end
+
+def button_down(id)
+  if (id == Gosu::KB_DOWN)
+    @players[1].down
+  end
+  if (id == Gosu::KB_UP)
+    @players[1].up
+  end
+  super(id)
+end
+```
+---
 class: center, middle, depfu
 # 3D
 
@@ -159,8 +196,89 @@ class: center, middle, depfu
 # mittsu
 ---
 # inspiration: three.js
+---
+```ruby
+scene = Mittsu::Scene.new
+camera = Mittsu::PerspectiveCamera.new(75.0, ASPECT, 0.1, 1000.0)
 
+renderer = Mittsu::OpenGLRenderer.new(
+  width: SCREEN_WIDTH,
+  height: SCREEN_HEIGHT,
+  title: '02 Box Mesh Example'
+)
 
+geometry = Mittsu::BoxGeometry.new(1.0, 1.0, 1.0)
+material = Mittsu::MeshBasicMaterial.new(color: 0x00ff00)
+cube = Mittsu::Mesh.new(geometry, material)
+scene.add(cube)
+
+camera.position.z = 5.0
+
+renderer.window.on_resize do |width, height|
+  renderer.set_viewport(0, 0, width, height)
+  camera.aspect = width.to_f / height.to_f
+  camera.update_projection_matrix
+end
+
+renderer.window.run do
+  cube.rotation.x += 0.1
+  cube.rotation.y += 0.1
+  renderer.render(scene, camera)
+end
+```
+---
+# SketchUp
+---
+class: demo, center, middle
+
+# Demo
+---
+```ruby
+def self.dialog
+  labels = ['Width', 'Length', 'Deviation', 'Cube width']
+  defaults = [20, 7, 0.5, 5]
+  width, length, dev, cube_size = UI.inputbox(
+    labels, defaults, "Pixel Text"
+  )
+  new(width, length, dev, cube_size).place_component
+end
+
+```
+---
+```ruby
+def initialize(width, length, dev, cube_size=5)
+  @definition = Sketchup.active_model.definitions.add "Pixel Text"
+  @cube_size = cube_size
+  width.times do |x|
+    length.times do |y|
+      z = dev * rand()
+      offset = Geom::Point3d.new(
+        x * @cube_size.mm,
+        y * @cube_size.mm,
+        z * @cube_size.mm
+      )
+      add_cube(offset)
+    end
+  end
+end
+```
+---
+```ruby
+def add_cube(offset = Geom::Point3d.new(0,0,0))
+  puts "cube at #{offset.inspect}"
+  size = @cube_size
+  group = @definition.entities.add_group
+  points = [
+    Geom::Point3d.new(0, 0, 0),
+    Geom::Point3d.new(size.mm, 0, 0),
+    Geom::Point3d.new(size.mm, size.mm, 0),
+    Geom::Point3d.new(0, size.mm, 0)
+  ]
+  face = group.entities.add_face(points)
+  face.pushpull(-size.mm)
+  group.move!(offset)
+end
+```
 ---
 class: center, middle, depfu
 
@@ -187,13 +305,13 @@ class: middle
 ---
 # soX
 ---
-class: middle
+
 ```sh
 $SOUNDGEN | play -t raw -b 32 -r 44100 -c 1 -e \
                    floating-point --endian little -
 ```
 ---
-class: middle
+
 ```ruby
 print [$FLOAT_VALUE].pack('e')
 ```
@@ -201,7 +319,7 @@ print [$FLOAT_VALUE].pack('e')
 class: middle, center
 # BUT WHAT VALUES, JAN?!?
 ---
-class: middle
+
 ```ruby
 SFREQ = 44100
 FREQ = 440
@@ -216,7 +334,10 @@ FREQ = 440
 end
 ```
 ---
-class: middle
+class: contain
+background-image: url(images/SquareWave.png)
+---
+
 ```ruby
 SFREQ = 44100
 NOTES = [24, 24, 48, 37]
@@ -240,7 +361,6 @@ end
 end
 ```
 ---
-class: middle
 ```ruby
 # http://www.musicdsp.org/archive.php?classid=3#24
 class MoogFilter
@@ -269,8 +389,6 @@ end
 class: contain
 background-image: url(images/Filter.png)
 ---
-
-class: middle
 ```ruby
 # [...]
 v *= -1.0 if t % period > (period / 2)
@@ -279,7 +397,6 @@ v *= 0.4
 # [...]
 ```
 ---
-class: middle
 ```ruby
 class Envelope
   def initialize(a,r)
@@ -302,7 +419,6 @@ end
 class: contain
 background-image: url(images/Envelope.png)
 ---
-class: middle
 ```ruby
 # [...]
 vol_ar = Envelope.new(0.001,0.1)
@@ -332,7 +448,6 @@ background-image: url(images/usb_a.jpg)
 class: middle, center
 # 1983
 ---
-class: middle
 ## Anatomy of a MIDI message
 ```
 [ 0x90, 0x18, 0x7f ]
@@ -344,7 +459,6 @@ class: middle
 ---
 # portmidi
 ---
-class: middle
 ```ruby
 require 'portmidi'
 
@@ -357,7 +471,7 @@ output =  Portmidi::Output.new(device.device_id)
 now = Portmidi.time
 ```
 ---
-class: middle
+
 ```ruby
 messages = []
 NOTES.each_with_index do |note, beat|
@@ -377,7 +491,7 @@ NOTES.each_with_index do |note, beat|
 end
 ```
 ---
-class: middle
+
 ```ruby
 Portmidi.on_timer do |time|
   sent = []
@@ -404,7 +518,7 @@ class: contain
 background-image: url(images/launchpad_mini.png)
 
 ---
-class: middle
+
 ```ruby
 require 'launchpad'
 interaction = Launchpad::Interaction.new(
@@ -476,11 +590,15 @@ class: middle, center, depfu
 class: middle, center, demo
 # Demo
 ---
+# [halfbyte/Gosu-Minesweeper#launchpad_support](https://github.com/halfbyte/Gosu-Minesweeper/tree/launchpad_support)
+---
+class: center, middle, depfu
+
+# Why?
+---
 class: depfu, middle, center
 # ❤️ Thank you ❤️
 ## halfbyte/ruby_for_artists
 ## 🎹 ✏️
 ## @halfbyte
 ## depfu.com
-
----
