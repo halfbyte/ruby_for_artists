@@ -2,4 +2,9 @@
 
 A weird and wonderful mixture of different ways to use ruby to make art
 
-1. [Soundgen](soundgen/) an MVP of a ruby sound synthesizer system
+1. [Gosu](gosu/) - some simple examples of using gosu, the 2d game api
+1. [JRubyArt](jruby_art/) - a simple example and partial port of the Sunburst tool, both taken from the book ["Generate Design"](http://www.generative-gestaltung.de/)
+1. [mittsu](mittsu/) a simple and a more complex example of Mittsu, the ThreeJS inspired OpenGL wrapper
+1. [portmidi](portmidi/) some examples of using the portmidi library to use
+1. [RubySynth](rubysynth/) an MVP of a ruby sound synthesizer system
+1. [SketchUp API](sketchup_api/) two small examples 

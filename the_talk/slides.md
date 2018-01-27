@@ -4,7 +4,13 @@ class: center, middle
 # My Ruby Is a Synth
 ## Jan 'half/byte' Krutisch
 ## @halfbyte
+---
+class: center, middle, contain
+background-image: url(images/runconf-header-logo-01.svg)
+---
+class: center, middle
 
+# [RubyUnconf.eu](http://rubyunconf.eu)
 ---
 class: center, middle, depfu, contain
 background-image: url(images/depfu-left-blue.png)
@@ -70,7 +76,7 @@ end
 pdf.render_file(options[:outfile])
 ```
 ---
-
+class: center, middle
 # realtime
 ---
 class: contain
