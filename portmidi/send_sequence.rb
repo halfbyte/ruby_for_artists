@@ -6,11 +6,24 @@ device = Portmidi.output_devices.find do |device|
 end
 output =  Portmidi::Output.new(device.device_id)
 
-now = Portmidi.time
-
 NOTES = [24, 24, 48, 37] * 16
-
 messages = []
+
+Porttime.start(10) do |time|
+  sent = []
+  messages.each do |msg|
+    if time >= msg[0] && !msg[2]
+      output.write_short(*msg[1])
+      msg[2] = true
+    end
+    sent.each do |msg|
+      messages.delete(msg)
+    end
+  end    
+end
+
+now = Porttime.time
+puts now
 NOTES.each_with_index do |note, beat|
   messages << [now + (beat * 250), [0x90, note, 0x60], false]
   messages << [now + (beat * 250) + 125, [0x80, note, 0x60], false]
@@ -27,19 +40,7 @@ NOTES.each_with_index do |note, beat|
   end
 end
 
-Portmidi.on_timer do |time|
-  sent = []
-  
-  messages.each do |msg|
-    if time >= msg[0] && !msg[2]
-      output.write_short(*msg[1])
-      msg[2] = true
-    end
-    sent.each do |msg|
-      messages.delete(msg)
-    end
-  end  
-end
+
 seq_len = (NOTES.length.to_f * 250.0 + 250.0) / 1000.0
 puts "Sleeping #{seq_len} now."
 sleep seq_len

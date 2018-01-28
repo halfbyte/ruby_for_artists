@@ -5,14 +5,15 @@ GEM
     launchpad (0.3.0)
       ffi
       portmidi (>= 0.0.6)
-    portmidi (0.0.6)
+    portmidi (1.0.0.pre.beta.1)
+      ffi (~> 1.9)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   launchpad
-  portmidi
+  portmidi (~> 1.0.0.pre.beta.1)
 
 BUNDLED WITH
    1.16.0
