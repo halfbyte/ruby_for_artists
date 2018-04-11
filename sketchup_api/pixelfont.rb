@@ -18,6 +18,8 @@ module Halfbyte
       text = text.downcase
       xoff = 0
       text.each_char do |c|
+        puts c.inspect
+        puts CharFont::CHARS.inspect
         char_data = CharFont::CHARS[c]
         draw_character(char_data, xoff)
         xoff += char_data[:width]
