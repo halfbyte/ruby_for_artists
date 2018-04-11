@@ -1,4 +1,6 @@
+require_relative 'mittsu_patch'
 require 'mittsu'
+
 
 require_relative '../char_font'
 
@@ -37,7 +39,7 @@ scene.add(point_light)
 
 
 group = Mittsu::Group.new()
-text = "ruby on ice"
+text = "i § ruby"
 xoff = 0
 text.each_char do |c|
   char_data = CharFont::CHARS[c]
