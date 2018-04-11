@@ -37,7 +37,7 @@ scene.add(point_light)
 
 
 group = Mittsu::Group.new()
-text = "ruby on ice"
+text = "hamburgsync"
 xoff = 0
 text.each_char do |c|
   char_data = CharFont::CHARS[c]
