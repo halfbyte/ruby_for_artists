@@ -53,6 +53,10 @@ class: center, middle
 class: center, middle, depfu, contain
 background-image: url(images/depfu-left-blue.png)
 ---
+class: contain
+background-image: url(images/depfu_example.png)
+
+---
 class: center, middle, depfu
 # A warning
 ---
@@ -88,7 +92,12 @@ background-image: url(images/real_calendar.jpeg)
 class: contain
 background-image: url(images/calendar_januar.png)
 ---
-# gem install 'prawn'
+class: center, middle
+# Prawn
+---
+class: center, middle
+# Alexander Mankuta
+# (and many others)
 ---
 
 ```ruby
@@ -131,6 +140,9 @@ class: center, middle
 ---
 class: center, middle
 # JRuby_Art
+---
+class: center, middle
+# Martin Prout
 
 ---
 
@@ -201,7 +213,11 @@ end
 class: demo, center, middle
 # Demo
 ---
+class: center, middle
 # gosu
+---
+class: center, middle
+# Julian Raschke
 ---
 ```ruby
 def draw
@@ -233,11 +249,18 @@ def button_down(id)
 end
 ```
 ---
+class: demo, center, middle
+# Demo
+---
 class: center, middle, depfu
 # 3D
 
 ---
+class: center, middle
 # mittsu
+---
+class: center, middle
+# Daniel Smith
 ---
 # inspiration: three.js
 ---
@@ -271,11 +294,11 @@ renderer.window.run do
 end
 ```
 ---
-# SketchUp
----
 class: demo, center, middle
-
 # Demo
+---
+class: center, middle
+# SketchUp
 ---
 ```ruby
 def self.dialog
@@ -324,6 +347,9 @@ def add_cube(offset = Geom::Point3d.new(0,0,0))
 end
 ```
 ---
+class: demo, center, middle
+# Demo
+---
 class: center, middle, depfu
 
 # Music / Sound
@@ -332,6 +358,11 @@ class: center, middle, depfu
 class: center, middle
 
 # Sonic Pi
+---
+class: center, middle
+
+# Carrie Anne
+# Sam Aaron
 ---
 class: demo, center, middle
 
@@ -347,9 +378,16 @@ class: middle
 2. Send it to the soundcard
 3. <s>Profit</s>Fun!
 ---
-# soX
+class: center, middles
+# SoX
 ---
+class: center, middles
+# Lance Norskog
+# Chris Bagwell
+# (and many others)
 
+(It started in 1991. yeah.)
+---
 ```sh
 $SOUNDGEN | play -t raw -b 32 -r 44100 -c 1 -e \
                    floating-point --endian little -
@@ -481,6 +519,12 @@ class: middle, center
 class: middle, center
 # MIDI
 ---
+class: middle, center
+# *M*usical *I*nstruments *D*igital *I*nterface
+---
+class: middle, center
+# 1983
+---
 class: contain
 background-image: url(images/midi_din.png)
 ---
@@ -517,38 +561,38 @@ now = Portmidi.time
 ---
 
 ```ruby
-messages = []
-NOTES.each_with_index do |note, beat|
-  messages << [now + (beat * 250), [0x90, note, 0x60], false]
-  messages << [now + (beat * 250) + 125, [0x80, note, 0x60], false]
-  if beat % 2 == 0
-    messages << [now + (beat * 250), [0x91, 36, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36, 0x60], false]
-  else
-    messages << [now + (beat * 250), [0x91, 36 + 6, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36 + 6, 0x60], false]
-  end
-  if beat % 4 == 2
-    messages << [now + (beat * 250), [0x91, 36 + 2, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36 + 2, 0x60], false]    
-  end
+def note_on_beat(now, beat, length, note, channel, velocity)
+  [
+    Message.new(now + (beat * 250), [NOTE_ON + channel, note, velocity]),
+    Message.new(now + (beat * 250) + length, [NOTE_OFF + channel, note, velocity]),
+  ]
+end
+
+Porttime.start(10) do |time|
+  Message.send(messages, time, output)
 end
 ```
 ---
 
 ```ruby
-Portmidi.on_timer do |time|
-  sent = []
+NOTES = [24, 24, 48, 37, 24, 24, 49, 37] * 8
 
-  messages.each do |msg|
-    if time >= msg[0] && !msg[2]
-      output.write_short(*msg[1])
-      msg[2] = true
-    end
-    sent.each do |msg|
-      messages.delete(msg)
-    end
-  end  
+now = Porttime.time
+NOTES.each_with_index do |note, beat|
+  messages += note_on_beat(now, beat, 125, note, 0, 0x60)
+
+  #drums
+  if beat % 2 == 0
+    # Bassdrum
+    messages += note_on_beat(now, beat, 125, 36, 1, 0x60)
+  else
+    # Snare
+    messages += note_on_beat(now, beat, 125, 36 + 6, 1, 0x60)
+  end
+  if beat % 4 == 2
+    # Hihat
+    messages += note_on_beat(now, beat, 125, 36 + 2, 1, 0x60)
+  end
 end
 
 ```
@@ -556,11 +600,18 @@ end
 class: middle, center, demo
 # Demo
 ---
+class: center, middle
 # Launchpad
 ---
 class: contain
 background-image: url(images/launchpad_mini.png)
 
+---
+class: center, middle
+# launchpad gem
+---
+class: center, middle
+# Thomas Jachmann
 ---
 
 ```ruby

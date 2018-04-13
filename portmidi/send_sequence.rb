@@ -1,45 +1,65 @@
 require 'portmidi'
 
 Portmidi.start
-device = Portmidi.output_devices.find do |device|
-  device.name.match(/IAC/)
+device = Portmidi.output_devices.find do |dev|
+  dev.name.match(/IAC/)
 end
 output =  Portmidi::Output.new(device.device_id)
 
-NOTES = [24, 24, 48, 37] * 16
+NOTES = [24, 24, 48, 37, 24, 24, 49, 37] * 8
 messages = []
 
+NOTE_ON = 0x90
+NOTE_OFF = 0x80
+
+class Message
+  attr_reader :time, :message, :sent
+  def initialize(time, message)
+    @time = time
+    @message = message
+    @sent = false
+  end
+
+  def sent!
+    @sent = true
+  end
+
+  def self.send(messages, time, output)
+    messages.select { |message| !message.sent && time >= message.time }.each do |message|
+      message.sent!
+      output.write_short(*message.message)
+    end
+  end
+end
+
+def note_on_beat(now, beat, length, note, channel, velocity)
+  [
+    Message.new(now + (beat * 250), [NOTE_ON + channel, note, velocity]),
+    Message.new(now + (beat * 250) + length, [NOTE_OFF + channel, note, velocity]),
+  ]
+end
+
 Porttime.start(10) do |time|
-  sent = []
-  messages.each do |msg|
-    if time >= msg[0] && !msg[2]
-      output.write_short(*msg[1])
-      msg[2] = true
-    end
-    sent.each do |msg|
-      messages.delete(msg)
-    end
-  end    
+  Message.send(messages, time, output)
 end
 
 now = Porttime.time
-puts now
 NOTES.each_with_index do |note, beat|
-  messages << [now + (beat * 250), [0x90, note, 0x60], false]
-  messages << [now + (beat * 250) + 125, [0x80, note, 0x60], false]
+  # Bass notes
+  messages += note_on_beat(now, beat, 125, note, 0, 0x60)
+  # Beat
   if beat % 2 == 0
-    messages << [now + (beat * 250), [0x91, 36, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36, 0x60], false]
+    # Bassdrum
+    messages += note_on_beat(now, beat, 125, 36, 1, 0x60)
   else
-    messages << [now + (beat * 250), [0x91, 36 + 6, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36 + 6, 0x60], false]
+    # Snaredrum
+    messages += note_on_beat(now, beat, 125, 36 + 6, 1, 0x60)
   end
   if beat % 4 == 2
-    messages << [now + (beat * 250), [0x91, 36 + 2, 0x60], false]
-    messages << [now + (beat * 250) + 125, [0x81, 36 + 2, 0x60], false]    
+    # Hihat
+    messages += note_on_beat(now, beat, 125, 36 + 2, 1, 0x60)
   end
 end
-
 
 seq_len = (NOTES.length.to_f * 250.0 + 250.0) / 1000.0
 puts "Sleeping #{seq_len} now."
