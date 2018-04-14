@@ -12,6 +12,6 @@ A weird and wonderful mixture of different ways to use ruby to make art
 
 Other Projects mentioned in the talk:
 
-- [halfbyte/calgen] The prawn example I showed in the beginning
-- [halfbyte/Gosu-Minesweeper] The hack to make Minesweeper run on Launchpad (There's also my [version](https://github.com/halfbyte/padsweeper/) running in the Browser from JSUnconf2017, if you are a Minesweeper fan)
+- [halfbyte/calgen](/halfbyte/calgen) The prawn example I showed in the beginning
+- [halfbyte/Gosu-Minesweeper](/halfbyte/Gosu-Minesweeper) The hack to make Minesweeper run on Launchpad (There's also my [version](https://github.com/halfbyte/padsweeper/) running in the Browser from JSUnconf2017, if you are a Minesweeper fan)
 - [halfbyte/webovision](https://github.com/halfbyte/webovision) Not actually mentioned as this was the one thing I left out. ([See the result](https://pixelpoke.de/webovision/))
