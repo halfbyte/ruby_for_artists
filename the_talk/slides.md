@@ -172,8 +172,11 @@ def draw
 end
 ```
 ---
-class: demo, center, middle
-# Demo
+class: center, middle, scale-image
+![jruby art demo simple](images/demos/jruby_art_01.gif)
+---
+class: center, middle, scale-image
+![jruby art demo sunburst](images/demos/jruby_art_02.gif)
 ---
 class: center, middle
 # gosu
@@ -211,12 +214,11 @@ def button_down(id)
 end
 ```
 ---
-class: demo, center, middle
-# Demo
+class: center, middle, scale-image
+![Gosu Pong](images/demos/gosu.gif)
 ---
 class: center, middle, depfu
 # 3D
-
 ---
 class: center, middle
 # mittsu
@@ -256,8 +258,11 @@ renderer.window.run do
 end
 ```
 ---
-class: demo, center, middle
-# Demo
+class: center, middle, scale-image
+![Mittsu simple](images/demos/mittsu_01.gif)
+---
+class: center, middle, scale-image
+![Mittsu i heart ruby](images/demos/mittsu_02.gif)
 ---
 class: center, middle
 # SketchUp
@@ -309,8 +314,11 @@ def add_cube(offset = Geom::Point3d.new(0,0,0))
 end
 ```
 ---
-class: demo, center, middle
-# Demo
+class: center, middle, scale-image
+![Sketchup i heart ruby](images/demos/sketchup.gif)
+---
+class: center, middle, scale-image
+![3d printed i heart ruby](images/demos/sketchup.gif)
 ---
 class: center, middle, depfu
 
@@ -381,6 +389,9 @@ end
 class: contain
 background-image: url(images/SquareWave.png)
 ---
+class: middle, center
+<audio src="sounds/synth_01.rb.mp3" controls="controls" />
+---
 
 ```ruby
 SFREQ = 44100
@@ -404,6 +415,9 @@ end
   print [v].pack('e')
 end
 ```
+---
+class: middle, center
+<audio src="sounds/synth_02.rb.mp3" controls="controls" />
 ---
 ```ruby
 # http://www.musicdsp.org/archive.php?classid=3#24
@@ -429,6 +443,9 @@ class MoogFilter
   end
 end
 ```
+---
+class: middle, center
+<audio src="sounds/synth_03.rb.mp3" controls="controls" />
 ---
 class: contain
 background-image: url(images/Filter.png)
@@ -473,6 +490,9 @@ t_in_b = t % s_per_b #time in quarternote
 v = filter.run(v, 0.01 + flt_ar.run(t_in_b) * 0.3, 3)
 v *= vol_ar.run(t_in_b)
 ```
+---
+class: middle, center
+<audio src="sounds/synth_04.rb.mp3" controls="controls" />
 ---
 class: middle, center
 # Sidenote:
