@@ -622,8 +622,9 @@ end
 
 ```
 ---
-class: middle, center, demo
-# Demo
+class: middle, center
+<video src="images/demos/portmidi_01.mp4" controls="controls" />
+
 ---
 class: center, middle
 # Launchpad
@@ -658,47 +659,6 @@ interaction.response_to(:grid, :down) do |interaction, action|
 end
 
 interaction.start
-```
----
-class: middle, center, demo
-# Demo
----
-# MIDI files
----
-
-# Webovision
----
-```ruby
-require 'midilib'
-seq = MIDI::Sequence.new()
-# Read the contents of a MIDI file into the sequence.
-File.open(infile, 'rb') { | file |
-    seq.read(file)
-}
-tracks = []
-seq.tracks.each do |track|
-  tracks << {
-    name: track.name,
-    events: track.events.map do |event|
-      if event.is_a?(MIDI::NoteOn)
-        [:noteon, event.time_from_start,
-          event.channel, event.note, event.velocity]
-      elsif event.is_a?(MIDI::NoteOff)
-        [:noteoff, event.time_from_start,
-          event.channel, event.note, event.velocity]
-      elsif event.is_a?(MIDI::Controller)
-        [:controller, event.time_from_start,
-          event.channel, event.controller, event.value]
-      elsif event.is_a?(MIDI::ProgramChange)
-        [:progchange, event.time_from_start,
-          event.channel, event.program]
-      else
-        puts event.inspect;
-        nil
-      end
-    end.compact
-  }
-end
 ```
 ---
 class: middle, center, demo
