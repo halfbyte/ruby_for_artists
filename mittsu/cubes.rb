@@ -39,7 +39,7 @@ scene.add(point_light)
 
 
 group = Mittsu::Group.new()
-text = "i § ruby"
+text = "balkan § ruby"
 xoff = 0
 text.each_char do |c|
   char_data = CharFont::CHARS[c]

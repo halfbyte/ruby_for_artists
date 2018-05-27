@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    wavefront-obj (1.0.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  wavefront-obj
+
+BUNDLED WITH
+   1.16.1
